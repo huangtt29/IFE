@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .addStyle{
+            font-size:16px;
+            font-weight: bold;
+            background-color: red;
+            padding:.5em .5em;
+            margin-left: .5em;
+        }
+        #div{
+            margin-top:15px;
+        }
+    </style>
+    <script>
+        function addLoadEvent(func) {
+            var oldEvent=window.onload;
+            if(typeof oldEven !="function")
+                window.onload=func;
+            else{
+                window.onload=function(){
+                    oldEvent();
+                    func();
+                }
+            }
+        }
+
+        function btnClick()
+        {
+            var btn1=document.getElementById("button1");
+            var btn2=document.getElementById("button2");
+            var btn3=document.getElementById("button3");
+            var btn4=document.getElementById("button4");
+            var div=document.getElementById("div");
+
+            btn1.onclick=function () {
+                var value=document.getElementById("input").value;
+                if(isNaN(value)) {alert("number only"); return ;}
+                var span=document.createElement("span");
+                span.className="addStyle";
+                var text=document.createTextNode(value);
+
+                var firstNode=document.getElementsByTagName("span")[0];
+                span.appendChild(text);
+                div.insertBefore(span,firstNode);
+
+            }
+
+            btn2.onclick=function()
+            {
+                var value=document.getElementById("input").value;
+                if(isNaN(value)) {alert("number only"); return ;}
+                var span=document.createElement("span");
+                span.className="addStyle";
+                var text=document.createTextNode(value);
+
+                span.appendChild(text);
+                div.appendChild(span);
+
+            }
+            btn3.onclick=function()
+            {
+                var spans=document.getElementsByTagName("span");
+                var firstNode=spans[0];
+                alert("remove "+firstNode.firstChild.nodeValue);
+                div.removeChild(firstNode);
+            }
+            btn4.onclick=function()
+            {
+                var spans=document.getElementsByTagName("span");
+                var lastNode=spans[spans.length-1];
+                alert("remove "+lastNode.firstChild.nodeValue);
+                div.removeChild(lastNode);
+            }
+            div.addEventListener('click',function (event) {
+                div.removeChild(event.target);
+            })
+
+        }
+        function bubbleSort()
+        {
+            var spans=document.getElementsByTagName("span");
+            for(var i=0;i<spans.length;i++)
+            {
+                for(var j=i;j<spans.length;j++)
+                {
+                    if(spans[i].firstChild.nodeValue)
+                }
+            }
+        }
+        function loadEvents() {
+            btnClick();
+        }
+        addLoadEvent(loadEvents);
+    </script>
+</head>
+<body>
+    <div>
+        <input type="text" id="input">
+        <button id="button1">左侧入</button>
+        <button id="button2">右侧入</button>
+        <button id="button3">左侧出</button>
+        <button id="button4">右侧出</button>
+    </div>
+
+    <div id="div"></div>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务九</title>
+    <style>
+        .show{
+            position:relative;
+            left: 50%;top:10px;
+            transform: translate(-50%,0);
+            width:80%;
+            height: 80%;
+        }
+        div{
+            /*background-color默认为透明，不具有继承性*/
+            /*color具有继承性*/
+            background-color: white;
+            display: flex;
+            flex-flow:row wrap;
+            justify-content: space-around;
+            align-items: center;
+            margin:10px;
+            border:3px solid black;
+        }
+
+        form{
+            /*border: 1px solid black;*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button{
+            display: inline-block;
+            margin: 5px;
+            height: 30px;
+            background-color: white;
+            color: #b0e11e;
+            font-weight: bold;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor:pointer;
+            transition: 0.2s color linear,0.2s background linear;
+        }
+        button:hover{
+            background-color: #b0e11e;
+            color:white;
+        }
+        input{
+            border: 2px solid black;
+            margin-left: 5px;
+        }
+        div.select{
+            background-color: green;
+        }
+        div.noselect{
+            background-color: white;
+        }
+
+    </style>
+</head>
+<body>
+<div class="show">夜来
+    <div>风雨
+        <div>小楼听
+            <div>花既</div>21
+            <div>凋零</div>23
+            <div>且卖花</div>45
+            <div>梦回</div>91
+        </div>
+        <div>巫山
+            <div>任风语</div>harry
+            <div>爱上</div>potter
+        </div>
+    </div>
+    <div>层楼
+        <div>不道愁</div>蝶恋花
+        <div>小星</div>西江月
+        <div>花非花</div>江城子
+    </div>
+    <div>
+        <div>雾非雾
+            <div>满江红</div>念奴娇
+        </div>
+        <div>
+            <div>忆江南</div>herry
+            <div>扑算子</div>BOOK
+            <div>醉花阴</div>book
+        </div>
+    </div>
+    <div>沁园春</div>ship
+    <div>
+        <div>
+            <div>
+                <div>一剪梅</div>SHIP
+                <div>定风波</div>a
+                <div>虞美人</div>b
+            </div>
+            <div>苏轼</div>c
+        </div>
+        <div>
+            <div>李清照</div>d
+            <div>柳永</div>e
+        </div>
+    </div>
+    <div>
+        <div>
+            <div>
+                <div>辛弃疾</div>90
+                <div>李白</div>23
+                <div>杜甫</div>56
+            </div>
+            <div>陆游</div>11
+        </div>
+        <div>
+            <div>屈原</div>111
+            <div>
+                <div>陈子昂</div>900
+                <div>
+                    <div>王维</div>809
+                    <div>宋徽宗</div>788
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form>
+    <button id="btn-before">前序遍历</button>
+    <button id="btn-behind">后序遍历</button>
+
+        <input type="text" name="inp-search" id="inp-search">
+        <button id="btn-search">查询</button>
+
+
+    <button id="delete">删除</button>
+
+        <input type="text" name="inp-search" id="content">
+        <button id="add">添加</button>
+
+</form>
+<script>
+
+    <!--arr数据用于记录遍历的顺序-->
+    let arr=[];
+    let root=document.getElementsByClassName("show")[0];
+    let btn_before=document.getElementById("btn-before");
+    let btn_behind=document.getElementById("btn-behind");
+    let btn_search=document.getElementById("btn-search");
+    let btn_add=document.getElementById("add");
+    let btn_delete=document.getElementById("delete");
+
+
+    let previous=null;
+    function inial()
+    {
+        arr=[];
+    }
+
+
+    function preorder(node) {
+        if(node)
+        {
+            arr.push(node);
+            for(let i=node.firstElementChild;i!=null;i=i.nextElementSibling)
+            {
+                preorder(i);
+            }
+//            var num = node.children;
+//            for (var i = 0; i < num.length; i++) {
+//                preorder(num[i]);
+//            }
+        }
+    }
+    function postorder(node) {
+        if(node)
+        {
+            for(let i=node.firstElementChild;i!=null;i=i.nextElementSibling)
+            {
+                postorder(i);
+            }
+            arr.push(node);
+        }
+    }
+
+
+    function show() {
+        for(let i=0;i<arr.length;i++)
+        {
+            setTimeout(function (j) {
+                return function () {
+                    if(previous!=null) {
+                        clearClass();
+                    }
+                    addClass(arr[j],"select");
+                    previous=arr[j];
+                }
+            }(i),i*200);
+        }
+    }
+    //    searchTo会遍历到匿名节点
+    function searchTo(value) {
+        clearClass();
+        let newarr=[];
+        for(let i=0;i<arr.length;i++)
+        {
+            let childs=arr[i].childNodes;
+            for(let j=0;j<childs.length;j++)
+            {
+                if(childs[j].nodeType==3&&childs[j].nodeValue.indexOf(value)!=-1)
+                {
+                    newarr.push(arr[i]);
+                }
+            }
+        }
+        alert("找到"+newarr.length+"个相似内容");
+        for(let i=0;i<newarr.length;i++)
+        {
+            addClass(newarr[i],"select");
+//            newarr[i].style.backgroundColor="green";
+        }
+    }
+
+    function addClass(element,value) {
+        if (!element) return false;
+        if (!element.className) {
+            element.className = value;
+        } else {
+            var tempName = element.className;
+            tempName += ' ';
+            tempName += value;
+            element.className = tempName;
+        }
+    }
+    function clearClass() {
+        arr.forEach(function (item,index,array) {
+            if(item.className.indexOf("select")!=-1)
+            {
+                let newClassName=item.className.replace("select","");
+                item.className=newClassName;
+            }
+
+        });
+    }
+
+    function divClick() {
+        inial();
+        preorder(root);
+        arr.forEach(function (item,index,array) {
+                item.onclick=function (e) {
+                    e.preventDefault();
+                    e.stopPropagation() ;
+
+                    clearClass();
+
+                    addClass(this,'select');
+//                    this.style.backgroundColor="green";
+//                    alert(this.className);
+            }
+        })
+    }
+    function btn() {
+        btn_before.onclick=function (e) {
+//            如果不e.preventDefault();无法执行 为什么？
+            e.preventDefault();
+            inial();
+            preorder(root);
+            show();
+
+        };
+        btn_behind.onclick=function (e) {
+            e.preventDefault();
+            inial();
+            postorder(root);
+            show();
+        };
+        btn_search.onclick=function (e) {
+            e.preventDefault();
+            inial();
+            let value=document.getElementById("inp-search").value;
+            if(value)
+            {
+                preorder(root);
+                searchTo(value);
+
+            }
+            else alert("请输入查询内容");
+        };
+
+        btn_add.onclick=function (e) {
+            e.preventDefault();
+            inial();
+            preorder(root);
+            let content=document.getElementById("content").value;
+            if(!content)
+            {
+                alert("请输入添加内容");
+                return ;
+            }
+            let isfind=0;
+            arr.forEach(function (item,index,array) {
+                if(item.className.indexOf("select")!=-1){
+                    isfind=1;
+                    let dos=document.createElement("div");
+                    let dos_text=document.createTextNode(content);
+                    dos.appendChild(dos_text);
+                    item.appendChild(dos);
+                }
+            });
+            if(!isfind)
+            {
+                alert("请选择节点");
+                return;
+            }
+            divClick();
+        };
+        btn_delete.onclick=function (e) {
+            e.preventDefault();
+            preorder(root);
+            let divs=Array.prototype.slice.call(arr);
+            divs.forEach(function (item,index,array) {
+                if(item.className.indexOf("select")!=-1){
+//                    while(item.hasChildNodes())
+//                    {
+//                        item.removeChild(item.lastChild);
+//                    }
+                    item.parentNode.removeChild(item);
+                }
+            });
+            divClick();
+        }
+    }
+
+    window.onload=function () {
+        btn();
+        divClick();
+    }
+</script>
+</body>
+</html>

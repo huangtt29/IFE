@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #container div{
+            display:inline-block;
+            font-size:16px;
+            font-weight: bold;
+            background-color: red;
+            margin-left: .5em;
+            padding:.5em .5em;
+        }
+
+        span.found{
+            padding:0;
+            margin:0;
+            color:white;
+        }
+        #container{
+            margin-top:15px;
+        }
+    </style>
+
+</head>
+<body>
+<div>
+    <textarea  id="input"></textarea>
+    <button id="insert">输入</button>
+    <button id="search">查询</button>
+    <input type="text">
+</div>
+
+<div id="container"></div>
+</body>
+<script>
+    function addLoadEvent(func) {
+        var oldEvent=window.onload;
+        if(typeof oldEven !="function")
+            window.onload=func;
+        else{
+            window.onload=function(){
+                oldEvent();
+                func();
+            }
+        }
+    }
+
+    function func(){
+            var data=[];
+            var insert=document.getElementById("insert");
+            var search=document.getElementById("search");
+            var container=document.getElementById("container");
+            insert.onclick=function(){
+                var arr=[];
+                var text=document.getElementById("input").value;
+                text=text.replace(/[^0-9a-zA-Z]/g," ");
+                arr=text.split(" ");
+                for(var i=0;i<arr.length;i++)
+                {
+                    var node=document.createElement("div");
+                    node.innerHTML=arr[i];
+                    node.className="addStyle";
+                    container.appendChild(node);
+                    data.push(arr[i]);
+                }
+            }
+
+            search.onclick=function(){
+                var searchText=document.getElementsByTagName("input")[0].value;
+//                map() 方法返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值。 map() 不会改变原始数组。
+                container.innerHTML=data.map(function(d){
+                    if(searchText.length>0)
+                    {
+                        d=d.replace(new RegExp(searchText,"g"),"<span class='found'>"+searchText+"</span>");
+
+                    }
+                    return "<div>"+d+"</div>";
+                }).join("");
+//                alert(container.innerHTML);
+            }
+
+
+    }
+
+
+    function loadEvents() {
+        func();
+    }
+    addLoadEvent(loadEvents);
+</script>
+</html>

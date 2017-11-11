@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*div{*/
+            /*border:2px solid black;*/
+        /*}*/
+
+        .show{
+            /*使该元素水平居中*/
+            position:absolute;
+            top:50px;right:0;left:0;
+            margin: auto;
+
+            width: 50%;
+            height: 150px;
+
+        }
+        div{
+            display: flex;
+            flex-flow: row wrap;
+            /*justify-content 定义在主轴的对齐方式*/
+            justify-content: space-around;
+            /*align-items在侧轴的对齐方式*/
+            align-items: center;
+
+            background: #fff;
+            /*父元素宽度的45%*/
+            width: 45%;
+            /*父元素高度的70%*/
+            height: 70%;
+            border: 3px solid #000;
+            border-radius: 4px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="show">
+        <div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+            <div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <button id="preOrder">前序遍历</button>
+    <button id="inOrder">中序遍历</button>
+    <button id="postOrder">后序遍历</button>
+</body>
+<script>
+    function addLoadEvent(func) {
+        var oldEvent=window.onload;
+        if(typeof oldEven !="function")
+            window.onload=func;
+        else{
+            window.onload=function(){
+                oldEvent();
+                func();
+            }
+        }
+    }
+    var previous;
+    var arrNodes=[];
+    function inial()
+    {
+        arrNodes=[];
+        if (previous) {
+            previous.style.background = "#fff";
+        }
+    }
+    function preorder(node) {
+        if(node)
+        {
+            arrNodes.push(node);
+            preorder(node.firstElementChild);
+            preorder(node.lastElementChild);
+        }
+
+    }
+    function inorder(node) {
+        if(node)
+        {
+            inorder(node.firstElementChild);
+            arrNodes.push(node);
+            inorder(node.lastElementChild);
+        }
+
+    }
+    function postorder(node) {
+        if(node)
+        {
+            postorder(node.firstElementChild);
+            postorder(node.lastElementChild);
+            arrNodes.push(node);
+        }
+    }
+    function showColor(){
+        for (var i = 0; i < arrNodes.length; i++) {
+            setTimeout(function (j) {
+                return function () {
+                    if (previous) {
+                        previous.style.backgroundColor = "white";
+                    }
+                    arrNodes[j].style.backgroundColor = "blue";
+                    previous = arrNodes[j];
+                }
+            }(i), i*500);
+        }
+    }
+    function btnClick()
+    {
+        var show=document.getElementsByClassName("show")[0];
+        var preorderbtn=document.getElementById("preOrder");
+        var inorderbtn=document.getElementById("inOrder");
+        var postorderbtn=document.getElementById("postOrder");
+
+        preorderbtn.onclick=function (e) {
+            e.preventDefault();
+            inial();
+            arrNodes=[];
+            preorder(show);
+            showColor();
+        }
+        inorderbtn.onclick=function (e) {
+            e.preventDefault();
+            inial();
+            arrNodes=[];
+            inorder(show);
+            showColor();
+        }
+        postorderbtn.onclick=function (e) {
+            e.preventDefault();
+            inial();
+            arrNodes=[];
+            postorder(show);
+            showColor();
+        }
+
+    }
+    function loadEvents() {
+        btnClick();
+
+    }
+    addLoadEvent(loadEvents);
+</script>
+</html>

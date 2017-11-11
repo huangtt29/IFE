@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .addStyle{
+            width:20px;
+            margin-left: 5px;
+            background-color: red;
+            display:inline-block;
+        }
+        #div{
+            margin-top:15px;
+        }
+    </style>
+    <script>
+        function addLoadEvent(func) {
+            var oldEvent=window.onload;
+            if(typeof oldEven !="function")
+                window.onload=func;
+            else{
+                window.onload=function(){
+                    oldEvent();
+                    func();
+                }
+            }
+        }
+
+        function btnClick()
+        {
+            var btn1=document.getElementById("button1");
+            var btn2=document.getElementById("button2");
+            var btn3=document.getElementById("button3");
+            var btn4=document.getElementById("button4");
+            var div=document.getElementById("div");
+
+            btn1.onclick=function () {
+                var value=document.getElementById("input").value;
+                if(isNaN(value)) {alert("number only"); return ;}
+                else if(value<10||value>100) {alert("the number should betweent 10 and 100"); return ;}
+
+                var span=document.createElement("span");
+                span.className="addStyle";
+
+                span.style.height=value+"px";
+                span.style.marginTop=(100-value)+"px";
+                var firstNode=document.getElementsByTagName("span")[0];
+
+                div.insertBefore(span,firstNode);
+
+            }
+
+            btn2.onclick=function()
+            {
+                var value=document.getElementById("input").value;
+                if(isNaN(value)) {alert("number only"); return ;}
+                else if(value<10||value>100) {alert("the number should betweent 10 and 100"); return ;}
+
+                var span=document.createElement("span");
+                span.className="addStyle";
+
+                span.style.height=value+"px";
+                span.style.marginTop=(100-value)+"px";
+                div.appendChild(span);
+
+            }
+            btn3.onclick=function()
+            {
+                var spans=document.getElementsByTagName("span");
+                var firstNode=spans[0];
+                alert("remove "+parseInt(firstNode.style.height));
+                div.removeChild(firstNode);
+            }
+            btn4.onclick=function()
+            {
+                var spans=document.getElementsByTagName("span");
+                var lastNode=spans[spans.length-1];
+                alert("remove "+parseInt(lastNode.style.height));
+                div.removeChild(lastNode);
+            }
+           div.addEventListener('click',function (event) {
+                    if(event.target.nodeName.toLowerCase()=="span")
+                    {
+                        alert("remove "+parseInt(event.target.style.height));
+                        div.removeChild(event.target);
+                    }
+
+           })
+
+
+            document.getElementById("sort").onclick=bubbleSort;
+
+        }
+        function bubbleSort()
+        {
+            var spans=document.getElementsByTagName("span");
+            for(var i=0;i<spans.length;i++)
+            {
+                for(var k=i;k<spans.length-1;k++)
+                {
+                    setTimeout(function(k){
+                        var div=document.getElementById("div");
+                        var nodes=div.childNodes;
+                        var k0=parseInt(spans[k].style.height);
+                        var k1=parseInt(spans[k+1].style.height);
+                        if(k0>k1)
+                        {
+                            nodes[k].style.height=k1+"px";
+                            nodes[k].style.marginTop=(100-k1)+"px";
+                            nodes[k+1].style.height=k0+"px";
+                            nodes[k+1].style.marginTop=(100-k0)+"px";
+                        }
+                    }(j),1000);
+
+                }
+            }
+        }
+        function loadEvents() {
+            btnClick();
+        }
+        addLoadEvent(loadEvents);
+    </script>
+</head>
+<body>
+    <div>
+        <input type="text" id="input">
+        <button id="button1">左侧入</button>
+        <button id="button2">右侧入</button>
+        <button id="button3">左侧出</button>
+        <button id="button4">右侧出</button>
+        <button id="sort">排序</button>
+    </div>
+
+    <div id="div"></div>
+</body>
+</html>

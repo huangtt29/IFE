@@ -3,8 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .container{
+            width: 800px;
+            margin:50px auto;
+            font-size: 18px;
+        }
+
+        button{
+            background-color: #3388ff;
+            height :34px;
+            width:80px;
+            border:none;
+            border-radius:5px ;
+            color: white;
+            font-size: 18px;
+        }
+       input{
+           margin:0 10px;
+            height: 30px;
+           width:500px;
+
+           /*border-radius: 5px;*/
+       }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <form>
+            <label for="name">名称</label>
+            <input id="name" placeholder="必填，长度为4~16个字符">
+            <button>验证</button>
+        </form>
+        <div class="answer"></div>
+    </div>
 
+
+    <script>
+        function check() {
+            let btn=document.getElementsByTagName("button")[0];
+            let answer=document.getElementsByClassName("answer")[0];
+            btn.onclick=function (e) {
+                e.preventDefault();
+                let val=document.getElementById("name").value;
+
+                let str=val.trim().split("");
+                let reg=/[0-9a-zA-Z]/g;
+                let english=0;
+                let chinese=0;
+                for(let i=0;i<str.length;i++)
+                {
+                    if(reg.test(str[i]))
+                    {
+                        english++;
+                    }
+                    else chinese++;
+                }
+                let len=english+chinese*2;
+                if(len<4)
+                {
+                    answer.innerHTML="<p>必填，长度为4~16个字符</p>";
+
+                }
+                else if(len>=4&&len<=16)
+                {
+                    answer.innerHTML="<p>验证成功</p>";
+                }
+                else
+                {
+                    answer.innerHTML="<p>必填，长度为4~16个字符</p>";
+                }
+            }
+        }
+        window.onload=function () {
+            check();
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin:10px;
+        }
+        .container{
+            width: 500px;
+            margin:50px auto;
+            font-size: 18px;
+        }
+        .company_container,.school_container{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form>
+
+        <label><input type="radio"  id="inschool" value="inschool" name="student" >在校生</label>
+        <label><input type="radio" value="leaveschool" id="leaveschool" name="student">非在校生</label>
+
+        <div class="school_container">
+            <label for="city">选择地址</label>
+            <select id="city">
+                <option>重庆</option>
+                <option>广州</option>
+                <option>北京</option>
+            </select>
+            <label for="school">选择学校</label>
+            <select id="school">
+                <option>重庆大学</option>
+                <option>重庆医科大学</option>
+            </select>
+        </div>
+        <div class="company_container">
+            <label for="company">地址</label>
+            <input id="company" name="company">
+        </div>
+    </form>
+</div>
+
+
+<script>
+    let schools={
+      '重庆':['重庆大学','重庆医科大学'],
+        '广州':['中山大学','华南理工大学','广东海洋大学'],
+        '北京':['北京大学','清华大学','北京林业大学','北京电子邮电大学']
+    };
+
+    function show() {
+        let school_container =document.getElementsByClassName("school_container")[0];
+        let company_container =document.getElementsByClassName("company_container")[0];
+        document.getElementById("inschool").addEventListener('click',function () {
+            school_container.style.display="block";
+            company_container.style.display="none";
+        });
+        document.getElementById("leaveschool").addEventListener('click',function () {
+            school_container.style.display="none";
+            company_container.style.display="block";
+        })
+    }
+    function changeSchool() {
+        let city=document.getElementById("city");
+
+        let school=document.getElementById("school");
+        city.addEventListener('change',function () {
+            let cityValue=city.value;
+            while(school.childElementCount>0)
+            {
+                school.removeChild(school.firstElementChild);
+            }
+            schools[cityValue].forEach(function (item,index,array) {
+
+                let option=document.createElement("option");
+                option.text=item;
+                school.appendChild(option);
+            })
+        })
+    }
+    window.onload=function () {
+        show();
+        changeSchool();
+    }
+</script>
+</body>
+</html>
